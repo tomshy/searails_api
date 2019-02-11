@@ -1,0 +1,113 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# sea_rails
+
+## Sign Up [/register]
+
+### Register [POST]
+
++ request (application/json)
+
+        [
+            {
+                "username":"{{username}}",
+                "password":{{password}}
+            }
+        ]
+        
++ response 200 (application/json)
+
+        [
+            {
+                "token":""
+            }
+        ]
+        
+## New Blog [/blogs/new]
+
+### Create new blog [POST]
+
++ request (application/json)
+
+        [
+            {
+                "title":"{{title}}",
+                "body":"{{blog}}"
+            }
+        ]
+        
++ response 200 (application/json)
+
+        [
+            {
+                "title":"sample title",
+                "body":"sample body"
+            }
+        ]
+        
+## Get Blogs [/blogs]
+
+### Get Blogs [GET]
+
++ response 200 (application/json)
+
+        [
+            {
+                "id":"",
+                "title":"",
+                "body":"",
+                "author":""
+                "comments":{
+                    "commenter":"",
+                    "comment":""
+                }
+            }
+        ]
+
+## Edit Blog [/blogs/id/edit]
+
+### Edit a blog [PATCH]
+
++ request (application/json)
+
+        [
+            {
+                "title":"{{new_title}}",
+                "body":"{{new_body}}"
+            }
+        ]
+        
++ response 200 (application/json)
+
+## Delete Blog [/blogs/id/del]
+
+### Delete Blog [DELETE]
+
++ request (application/json)
+
+        [
+            "id":"{{}}"
+        ]
+
++ response 200 (application/json)
+
+        [
+            "success":""
+        ]
+        
+## Delete Comment [/blogs/id/comments/id/del]
+
+### Delete Comment [DELETE]
+
++ request (application/json)
+
+        [
+            "id":"{{}}"
+        ]
+
++ response 200 (application/json)
+
+        [
+            "success":""
+        ]
