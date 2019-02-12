@@ -7,52 +7,33 @@ HOST: http://polls.apiblueprint.org/
 
 ### Register [POST]
 
+Registers a new user
+
 + request (application/json)
 
         [
             {
                 "username":"{{username}}",
-                "password":{{password}}
+                "password":"{{password}}"
             }
         ]
         
 + response 200 (application/json)
 
-        [
-            {
-                "token":""
-            }
-        ]
-        
-## New Blog [/blogs/new]
+        {
+            "message":"registered successfully"
+        }
 
-### Create new blog [POST]
++ response 500 (text/plain)
+    
+        Something went wrong
 
-Create a new blog post
-
-+ request (application/json)
-
-        [
-            {
-                "title":"{{title}}",
-                "body":"{{blog}}"
-            }
-        ]
-        
-+ response 200 (application/json)
-
-        [
-            {
-                "title":"sample title",
-                "body":"sample body"
-            }
-        ]
         
 ## Blogs [/blogs]
 
 ### Get Blogs [GET]
 
-Get a list of all blogs
+Returns a list of all blogs
 
 + response 200 (application/json)
 
@@ -62,41 +43,134 @@ Get a list of all blogs
                 "title":"",
                 "body":"",
                 "author":""
-                "comments":{
-                    "commenter":"",
-                    "comment":""
-                }
+                "published_on":"YYYY-MM-DD-HH-MM-SS"
             }
         ]
+        
++ response 500 (text/plain)
+    
+        Something went wrong
 
+
+### Create new blog [POST]
+
+Creates a new blog post
+
++ request (application/json)
+    + Headers
+            
+            Authentication: Basic Auth
+
++ request (application/json)
+
+        
+        {
+            "title":"{{title}}",
+            "body":"{{blog}}"
+            "published_on":"YYYY-MM-DD-HH-MM-SS"
+        }
+        
+        
++ response 201 (application/json)
+
+        {
+            "message":"Blog created successfully"
+        }
+
++ response 403 (text/plain)
+
+        Permission denied
+
++ response 500 (text/plain)
+    
+        Something went wrong
+        
 ## Blog [/blogs/{id}]
-
-### Edit a blog [PATCH]
-
-Edit an existing blog.
 
 + parameters
     
     + id (number) - id of the blog to be editted
 
-+ request (application/json)
+### Retrieve a blog [GET]
 
-        [
-            {
-                "title":"{{new_title}}",
-                "body":"{{new_body}}"
-            }
-        ]
-        
-+ response 200 (application/json)
-
-### Delete Blog [DELETE]
-Delete an existing post
+Returns a single blog by id
 
 + request (application/json)
 
         {
-            "id":"{{}}"
+            "id":"{{id}}"
+        }
+        
+        
++ response 200 (application/json)
+
+        {
+            "id":"",
+            "title":"",
+            "body":"",
+            "author":""
+            "comments":{
+                "commenter":"",
+                "comment":""
+            }
+        }
+        
+
++ response 404 (application/json)
+
+        {
+            "message":"no such blog"
+        }
+    
++ response 500 (text/plain)
+    
+        Something went wrong
+
+### Edit a blog [PATCH]
+
+Updates an existing blog
+
++ request 
+    + Headers
+            
+            Authentication: Basic Auth
+
++ request (application/json)
+
+        
+        {
+            "id":"{{id}}"
+        }
+       
+        
++ response 200 (application/json)
+
+        {
+            "message": "edit succesful"
+        }
+
++ response 403 (text/plain)
+
+        Permission Denied
+
++ response 500 (text/plain)
+    
+        Something went wrong
+
+
+### Delete Blog [DELETE]
+
+Deletes an existing post
+
++ request
+    + Headers
+            
+            Authentication: Basic Auth
+ 
++ request (application/json)
+
+        {
+            "id":"{{id}}"
         }
 
 + response 200
@@ -106,9 +180,13 @@ Delete an existing post
         {
             "message":"permission denied"
         }
-        
-## Comment [/blogs/{blog_id}/comments/{comment_id}]
 
++ response 500 (text/plain)
+    
+        Something went wrong
+   
+   
+## Comment [/blogs/{blog_id}/comments/{comment_id}]
 
 + Parameters
     + blog_id (number) - id of the blog having the comment to be editted
@@ -116,8 +194,13 @@ Delete an existing post
 
 ### Edit Comment [PATCH]
 
-Edit an existing comment
+Updates an existing comment
 
++ request
+    + Headers
+            
+            Authentication: Basic Auth
+ 
 
 + request (application/json)
 
@@ -131,32 +214,49 @@ Edit an existing comment
         {
             "success":"editted successfully"
         }
-+ response 404
++ response 404 (application/json)
 
         {
             "error":"resource not found"
         }
-+ response 403 
++ response 403 (application/json)
 
         {
             "message":"permission denied"
         }
+        
++ response 500 (text/plain)
+    
+        Something went wrong
+   
 ### Delete Comment [DELETE]
 
+Deletes a comment
+
++ request 
+    + Headers
+            
+            Authentication: Basic Auth
+        
 + request (application/json)
 
-        [
-            "id":"{{}}"
-        ]
+        {
+            "blog_id":"{{blog_id}}",
+            "comment_id":"{comment_id}"
+        }
 
 + response 200 (application/json)
 
-        [
-            "success":""
-        ]
+        {
+            "message":"Deleted successfully"
+        }
         
-+ response 403 
++ response 403 (application/json)
 
-        [
+        {
             "message":"permission denied"
-        ]
+        }
+        
++ response 500 (text/plain)
+    
+        Something went wrong
