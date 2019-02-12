@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: http://polls.apiblueprint.org/
 
-# sea_rails
+# SeaRails API
 
 ## Sign Up [/register]
 
@@ -28,6 +28,8 @@ HOST: http://polls.apiblueprint.org/
 
 ### Create new blog [POST]
 
+Create a new blog post
+
 + request (application/json)
 
         [
@@ -46,9 +48,11 @@ HOST: http://polls.apiblueprint.org/
             }
         ]
         
-## Get Blogs [/blogs]
+## Blogs [/blogs]
 
 ### Get Blogs [GET]
+
+Get a list of all blogs
 
 + response 200 (application/json)
 
@@ -65,9 +69,15 @@ HOST: http://polls.apiblueprint.org/
             }
         ]
 
-## Edit Blog [/blogs/id/edit]
+## Blog [/blogs/{id}]
 
 ### Edit a blog [PATCH]
+
+Edit an existing blog.
+
++ parameters
+    
+    + id (number) - id of the blog to be editted
 
 + request (application/json)
 
@@ -80,9 +90,58 @@ HOST: http://polls.apiblueprint.org/
         
 + response 200 (application/json)
 
-## Delete Blog [/blogs/id/del]
-
 ### Delete Blog [DELETE]
+Delete an existing post
+
++ request (application/json)
+
+        {
+            "id":"{{}}"
+        }
+
++ response 200
+
++ response 403 (application/json)
+
+        {
+            "message":"permission denied"
+        }
+        
+## Comment [/blogs/{blog_id}/comments/{comment_id}]
+
+
++ Parameters
+    + blog_id (number) - id of the blog having the comment to be editted
+    + comment_id (number) - id of the comment to be editted
+
+### Edit Comment [PATCH]
+
+Edit an existing comment
+
+
++ request (application/json)
+
+        {
+            "blog_id":"{blog_id}",
+            "comment_id":"{comment_id}",
+            "body":"{body}"
+        }
++ response 200 (application/json)
+
+        {
+            "success":"editted successfully"
+        }
++ response 404
+
+        {
+            "error":"resource not found"
+        }
++ response 403 
+
+        {
+            "message":"permission denied"
+        }
+### Delete Comment [DELETE]
 
 + request (application/json)
 
@@ -96,18 +155,8 @@ HOST: http://polls.apiblueprint.org/
             "success":""
         ]
         
-## Delete Comment [/blogs/id/comments/id/del]
-
-### Delete Comment [DELETE]
-
-+ request (application/json)
++ response 403 
 
         [
-            "id":"{{}}"
-        ]
-
-+ response 200 (application/json)
-
-        [
-            "success":""
+            "message":"permission denied"
         ]
