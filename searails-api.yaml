@@ -1,0 +1,582 @@
+openapi: 3.0.0
+info:
+  title: searails
+  description: This is an API for searails blogging system
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/tomshy/Searails_Blog_API/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /users:
+    post:
+      summary: Creates a user.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+            example:
+              data:
+                type: user
+                attributes:
+                  username: user01
+                  password: superstrongpassword
+                  full_name: super long name
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: Invalid input
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                errors:
+                - status: "400"
+                  title: Bad request
+                  detail: missing parameter in request
+  /posts:
+    get:
+      summary: Gets a list of all posts
+      responses:
+        200:
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/PostItems'
+        404:
+          description: Not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/404List'
+    post:
+      summary: Creates a new blog post
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/PostItem'
+            example:
+              data:
+                type: post
+                attributes:
+                  title: quite the title
+                  text: and some text
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SinglePostResponse'
+        400:
+          description: Invalid input
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                errors:
+                - status: "400"
+                  title: Bad request
+                  detail: missing parameter in request
+        401:
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BasicAuth: []
+  /posts/{postId}:
+    get:
+      summary: Returns a single post by ID
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SinglePostResponse'
+        404:
+          description: Not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/404'
+    delete:
+      summary: Deletes an existing post
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      responses:
+        204:
+          description: Deleted
+        401:
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/404'
+      security:
+      - BasicAuth: []
+    patch:
+      summary: Updates an existing post
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostItem'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SinglePostResponse'
+        400:
+          description: Invalid input
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                errors:
+                - status: "400"
+                  title: Bad request
+                  detail: missing parameter in request
+        401:
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/404'
+      security:
+      - BasicAuth: []
+  /posts/{postId}/comments:
+    get:
+      summary: Get a list of comments associated with a single post
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/CommentItems'
+        404:
+          description: Not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/404List'
+    post:
+      summary: Post a comment to a post
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/body'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleCommentResponse'
+        401:
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - BasicAuth: []
+  /posts/{postId}/comments/{commentId}:
+    get:
+      summary: Get a comment by ID
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      - name: commentId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleCommentResponse'
+        404:
+          description: Not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/404'
+    delete:
+      summary: Delete comment by ID
+      parameters:
+      - name: postId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      - name: commentId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 1
+          type: integer
+          format: int64
+      responses:
+        204:
+          description: Deleted
+        401:
+          description: Unauthorized
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404:
+          description: Not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/404'
+      security:
+      - BasicAuth: []
+components:
+  schemas:
+    404:
+      type: object
+      properties:
+        data:
+          type: string
+    Post:
+      required:
+      - text
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        id:
+          type: integer
+          format: int32
+        author_id:
+          type: integer
+          format: int32
+    PostItems:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostItem'
+    PostItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: post
+        id:
+          type: string
+          example: "1"
+        attributes:
+          $ref: '#/components/schemas/PostItem_attributes'
+    SinglePostResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PostItem'
+    User:
+      required:
+      - full_name
+      - password
+      - username
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+        full_name:
+          type: string
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        commenter:
+          type: string
+        body:
+          type: string
+        post_id:
+          type: integer
+          format: int32
+    CommentItem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: comment
+        id:
+          type: string
+          example: "1"
+        attributes:
+          $ref: '#/components/schemas/CommentItem_attributes'
+    SingleCommentResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CommentItem'
+    CommentItems:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentItem'
+    UserResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserResponse_data'
+    UserRequest:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserRequest_data'
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          description: HTTP status code
+          example: "401"
+        title:
+          type: string
+          description: short error message
+          example: Unauthorized
+        detail:
+          type: string
+          description: extended information about the error
+          example: Authentication required
+    404List:
+      type: object
+      properties:
+        data:
+          type: array
+          example: []
+          items:
+            type: object
+    postspostIdcomments_data_attributes:
+      type: object
+      properties:
+        body:
+          type: string
+          example: first comment
+    postspostIdcomments_data:
+      type: object
+      properties:
+        type:
+          type: string
+          example: comment
+        attributes:
+          $ref: '#/components/schemas/postspostIdcomments_data_attributes'
+    body:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/postspostIdcomments_data'
+    PostItem_attributes:
+      type: object
+      properties:
+        title:
+          type: string
+          example: First post
+        text:
+          type: string
+          example: with some text
+        author_id:
+          type: string
+          example: "2003"
+    CommentItem_attributes:
+      type: object
+      properties:
+        commenter:
+          type: string
+          example: first user
+        body:
+          type: string
+          example: first comment
+        post_id:
+          type: string
+          example: "1"
+    UserResponse_data_attributes:
+      type: object
+      properties:
+        username:
+          type: string
+        full_name:
+          type: string
+    UserResponse_data:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/UserResponse_data_attributes'
+    UserRequest_data_attributes:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        full_name:
+          type: string
+    UserRequest_data:
+      type: object
+      properties:
+        type:
+          type: string
+        attributes:
+          $ref: '#/components/schemas/UserRequest_data_attributes'
+  parameters:
+    PostId:
+      name: postId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        minimum: 1
+        type: integer
+        format: int64
+    CommentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        minimum: 1
+        type: integer
+        format: int64
+  examples:
+    BadRequest:
+      value:
+        errors:
+          status: "400"
+          title: Bad request
+          detail: missing parameter in request
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
