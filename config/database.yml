@@ -1,0 +1,19 @@
+# app/config/database.yml
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  # Database credentials
+  host: postgres # name for db service in docker-compose.yml
+  username: postgres # default user for postgresql docker image
+  password: mysecretpassword # must match POSTGRES_PASSWORD in docker-compose.yml
+
+development:
+  <<: *default
+  database: development
+
+
+test:
+  <<: *default
+  database: test
