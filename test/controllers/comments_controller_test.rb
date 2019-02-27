@@ -1,4 +1,5 @@
 require 'test_helper'
+require "faker"
 
 class CommentsControllerTest < ActionDispatch::IntegrationTest
 	include FactoryBot::Syntax::Methods

@@ -1,6 +1,6 @@
 module Api
 	module V1
-		class BlogController < ApplicationController
+		class BlogsController < ApplicationController
 			include ActionController::HttpAuthentication::Basic::ControllerMethods
 			http_basic_authenticate_with name: "user", password: "secret", except: :index
 			def index

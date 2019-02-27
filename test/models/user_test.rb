@@ -2,29 +2,31 @@ require 'test_helper'
 require 'faker'
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
-
-
   include FactoryBot::Syntax::Methods
-  def setup
-  	#FactoryBot.define do
-  	#	factory :user do
-  	#		name {Faker::Name.name}
-  	#		email {Faker::Internet.email} 
-  	#	end
-  	#end
-  	@user=users(:one)
-  	#@user=User.new(:user)
+
+  FactoryBot.define do
+    factory :validuser, class: User do
+      name {Faker::Name.name}
+      username {Faker::Internet.username}
+      email {Faker::Internet.email}
+      password {Faker::Internet.password(min_length=8,max_length=16,mix_case=true,special_chars=false)}
+    end
+    #without email and weaker password
+    #binding.pry
+    factory :invaliduser, class: User do
+      name {Faker::Name.name}
+      username {Faker::Internet.username}
+      password {Faker::Internet.password(6)}
+    end
+  end
+  def setup  	
+  	@validuser=create(:validuser)
+    @invaliduser=create(:invaliduser)
   end
   test "valid user" do  	  	
-  	assert @user.valid?, "user not valid"
-  end
-  test "invalid user without name" do
-  	refute_nil @user.name, "name cannot be nil"
-  end
+  	assert @validuser.valid?, "user not valid"
+  end  
   test "valid user without email" do
-  	refute_nil @user.email, "should have valid email"
+  	refute_nil @invaliduser.email?, "should have valid email"
   end
 end
