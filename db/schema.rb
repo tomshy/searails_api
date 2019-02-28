@@ -36,13 +36,11 @@ ActiveRecord::Schema.define(version: 2019_02_27_143407) do
 
   create_table "comments", force: :cascade do |t|
     t.string "body"
-    t.bigint "blog_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "article_id"
     t.bigint "user_id"
     t.index ["article_id"], name: "index_comments_on_article_id"
-    t.index ["blog_id"], name: "index_comments_on_blog_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -59,6 +57,5 @@ ActiveRecord::Schema.define(version: 2019_02_27_143407) do
   add_foreign_key "articles", "users"
   add_foreign_key "blogs", "users"
   add_foreign_key "comments", "articles"
-  add_foreign_key "comments", "blogs"
   add_foreign_key "comments", "users"
 end
