@@ -15,7 +15,7 @@ gem 'puma', '~> 3.11'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
+gem 'faker', '~> 1.9', '>= 1.9.1' 
 gem 'pry-rails'
 
 # Use ActiveStorage variant
@@ -34,7 +34,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_bot', '~> 5.0', '>= 5.0.1'
-  gem 'faker', '~> 1.9', '>= 1.9.1' 
+  
   gem 'database_cleaner', '~> 1.5', '>= 1.5.3'
 end
 
