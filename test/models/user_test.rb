@@ -19,7 +19,7 @@ class UserTest < ActiveSupport::TestCase
       password {Faker::Internet.password(6)}
     end
   end
-  def setup  	
+  def setup
   	@validuser=create(:validuser)
     @invaliduser=create(:invaliduser)
   end
