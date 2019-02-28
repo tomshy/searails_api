@@ -3,9 +3,13 @@ Rails.application.routes.draw do
 		namespace :v1 do
 			resources :users			
 			resources :blogs do
-				resources :articles 
+				resources :articles do
 					resources :comments
+				end
 			end
+			resources :articles do
+					resources :comments
+				end
 		end	  	
 	end
 end

@@ -3,9 +3,11 @@
 one:
   title: MyString
   body: MyTxt
-  blog_id: 2
+  blog_id: 298486374
+  user_id: 980190962
 
 two:
   title: MyString
   body: MyText
-  blog_id: 1
+  blog_id: 298486374
+  user_id: 980190962

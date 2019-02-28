@@ -27,10 +27,10 @@ module Api
 		  end
 		  def destroy
 		  	@blog = Blog.find(params[:blog_id])	    		
-	    	@article = @blog.article.find(params[:id])
+	    	@article = @blog.articles.find(params[:id])
 	    	if !@article.blank?
 		    	if @article.destroy
-		    		render json: @blog.article.all
+		    		render json: @blog.articles.all
 	    		else
 	    			render json: {error:"An error occurred."}
 	    		end
@@ -49,7 +49,7 @@ module Api
 		  end
 		  private
 		  def article_params
-		  	params.require(:article).permit(:title,:body,:user_id)
+		  	params.require(:article).permit(:title,:body)
 		  end
 		end
 	end

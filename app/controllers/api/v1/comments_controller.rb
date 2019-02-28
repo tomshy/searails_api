@@ -22,28 +22,28 @@ module Api
 			def destroy
 			  	@article = Article.find(params[:article_id])	    		
 			   	@comment = @article.comments.find(params[:id])
-			   	if !@comment.blank?
+			   	#if !@comment.blank?
 			    	if @comment.destroy
 			    		render json: @article.comments.all
 			   		else
 			   			render json: {error:"An error occurred."}
 			   		end
-			   	else
-			   		render json: {error: "Not Found"}
-			   	end
+			   	#else
+			   	#	render json: {error: "Not Found"}
+			   	#end
 			end
 			def update
-			 	@article = Article.find(params[:article_id])
-			   	@comment = @blog.comments.find(params[:id])
-			   	if @comment.update(comment_params)
-			   		render json: @comment
+			 	@article = Article.find(params[:article_id])			 	
+			   	@comment = @article.comments.find(params[:id])
+			   	if @comment.update(comment_params)			   		
+			   		render json: @comment			   				   		
 			   	else
 			   		render json: {error:"Error occurred",status: :not_modified}
 			   	end
 			end
 			private
 			def comment_params
-			  	params.require(:comment).permit(:body,:user_id)
+			  	params.require(:comment).permit(:body)
 			end
 		end
 	end

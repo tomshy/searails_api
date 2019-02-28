@@ -12,33 +12,33 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   		end
   	end
   def setup
-  	@article=create(:article)
-    #@blog_id=blogs(:one).id
-    #@user_id=users(:one).id
-    @auth_headers={"Authorization"=>"Basic #{Base64.encode64('user:secret')}"}
+  	@article=create(:article)    
+    @headers={"Authorization"=>"Basic #{Base64.encode64('user:secret')}","Content-Type"=>"application/vnd.api+json"}
   end
   test "should get all articles of a blog" do
-  	skip
+  	#skip
     get api_v1_blog_articles_path(@article.id)
     assert_response :success
   end
   test "should create an article" do
-  	skip
+  	#skip
   	assert_difference -> {Article.count} do
-    	post api_v1_blog_articles_path(blog_id:@article.blog_id), params: {article:{title:@article.body,body:@article.body,user_id:@article.user_id}}, as: :json, headers: @auth_headers
-    end
-    assert_response :success
+    	create(:article)
+    end        
+  end
+  test "should retrieve an article by id" do
+    get api_v1_blog_article_path(blog_id:@article.blog_id,id:@article.id), headers: @headers
   end
   test "should delete an article" do
-  	skip
+  	#skip
   	assert_difference -> {Article.count}, -1 do
-    	delete api_v1_blog_article_path(blog_id:@article.blog_id,id:@article.id), as: :json, headers: @auth_headers
+    	delete api_v1_blog_article_path(blog_id:@article.blog_id,id:@article.id), headers: @headers
     end
     assert_response :success
   end
   test "should update an article" do
-  	skip
-    	patch api_v1_blog_article_path(blog_id:@article.blog_id,id:@article.id), params: {article:{title:"new title",body:"new body",author:@article.author}}, as: :json, headers: @auth_headers
+  	
+    	patch api_v1_blog_article_path(blog_id:@article.blog_id,id:@article.id), params: {article:{title:"new title",body:"new body"}},as: :json, headers: @headers
     assert_response :success
   end
 end
