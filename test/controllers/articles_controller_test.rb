@@ -39,7 +39,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   test "should update an article" do
   	
     	patch api_v1_blog_article_path(blog_id:@article.blog_id,id:@article.id), params: {article:{title:"new title",body:"new body"}},as: :json, headers: @headers
-      binding.pry      
+      #binding.pry      
     assert_response :success
   end
 end
