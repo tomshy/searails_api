@@ -10,25 +10,28 @@ module Api
 		  	render json: @articles
 		  end
 		  def create
-		  	@blog=Blog.find(params[:blog_id])
+		  	@user = User.find(params[:user_id])
+		  	@blog = @user.blogs.find(params[:blog_id])		  	
 		  	@article=Article.new(article_params)
+		  	@blog.articles << @article
 				if @article.save
-					render json: {article:{title:@article.title, body:article.body, user_id: @article.user_id},
-								  message:"Created Successfully",
-								  status: 201}
+					render json: {article:{title:@article.title, body:@article.body, blog: @blog.id, author: @user.id },								  
+								  status: :created}
 				else
 					render json: {error:"Not created"}
 				end 
 		  end
 		  def show
-		  	@blog = Blog.find(params[:blog_id])
-	    	@article = @blog.article.find(params[:id])
+		  	@user = User.find(params[:user_id])
+		  	@blog = @user.blogs.find(params[:blog_id])
+	    	@article = @blog.articles.find(params[:id])
 	    	render json: @article
 		  end
 		  def destroy
-		  	@blog = Blog.find(params[:blog_id])	    		
+		  	@user = User.find(params[:user_id])
+		  	@blog = @user.blogs.find(params[:blog_id])	    		
 	    	@article = @blog.articles.find(params[:id])
-	    	if !@article.blank?
+	    	if !@article.nil?
 		    	if @article.destroy
 		    		render json: @blog.articles.all
 	    		else
@@ -39,7 +42,8 @@ module Api
 	    	end
 		  end
 		  def update
-		  	@blog = Blog.find(params[:blog_id])
+		  	@user = User.find(params[:user_id])
+		  	@blog = @user.blogs.find(params[:blog_id])
 	    	@article = @blog.articles.find(params[:id])
 	    	if @article.update(article_params)
 	    		render json: @article

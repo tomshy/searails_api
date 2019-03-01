@@ -8,17 +8,22 @@ module Api
 				render json: @blogs
 			end
 			def create
+				@user=User.find(params[:user_id])
 				@blog=Blog.new(blog_params)
+				@user.blogs << @blog			
+				#binding.pry
 				if @blog.save
-					render json: {blog:{name:@blog.name},
+
+					render json: {blog:{id:@blog.id, name:@blog.name},
 								  message:"Created Successfully",
-								  status: 201}
+								  }, :status => :created
 				else
-					render json: {error:"Blog Not Created"}
+					render json: {error:"Blog Not Created", :status => :bad_request}
 				end
 			end
 			def destroy
-				@blog=Blog.find(params[:id])
+				@user=User.find(params[:user_id])
+				@blog=@user.blogs.find(params[:id])
 				if @blog.destroy
 					@blogs=Blog.all
 					render json: @blogs
@@ -28,7 +33,7 @@ module Api
 			end
 			private
 			def blog_params
-				params.require(:blog).permit(:name, :user_id)
+				params.require(:blog).permit(:name)
 			end
 		end
 	end

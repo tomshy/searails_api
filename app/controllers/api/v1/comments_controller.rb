@@ -3,13 +3,17 @@ module Api
 		class CommentsController < ApplicationController
 			include ActionController::HttpAuthentication::Basic::ControllerMethods
 			http_basic_authenticate_with name: "user", password: "secret", except: :index
-			def index		  	
-				  	@article=Article.find(params[:article_id])
+			def index
+					@user=User.find(params[:user_id])
+					@blog=@user.blogs.find(params[:blog_id])
+				  	@article=@blog.articles.find(params[:article_id])
 				  	@comments=@article.comments.all
 				  	render json: @comments
 				  end
 			def create
-			  	@article=Article.find(params[:article_id])
+				@user=User.find(params[:user_id])
+				@blog=@user.blogs.find(params[:blog_id])
+				@article=@blog.articles.find(params[:article_id])			  	
 			  	@comment=Comment.new(comment_params)
 					if @comment.save
 						render json: {article:{body:@comment.body},
@@ -20,20 +24,24 @@ module Api
 					end 
 			end		 
 			def destroy
-			  	@article = Article.find(params[:article_id])	    		
+				@user=User.find(params[:user_id])
+				@blog=@user.blogs.find(params[:blog_id])
+				@article=@blog.articles.find(params[:article_id])			  	
 			   	@comment = @article.comments.find(params[:id])
-			   	#if !@comment.blank?
+			   	if !@comment.nil?
 			    	if @comment.destroy
 			    		render json: @article.comments.all
 			   		else
 			   			render json: {error:"An error occurred."}
 			   		end
-			   	#else
-			   	#	render json: {error: "Not Found"}
-			   	#end
+			   	else
+			   		render json: {error: "Not Found"}
+			   	end
 			end
 			def update
-			 	@article = Article.find(params[:article_id])			 	
+				@user=User.find(params[:user_id])
+				@blog=@user.blogs.find(params[:blog_id])
+				@article=@blog.articles.find(params[:article_id])			 	
 			   	@comment = @article.comments.find(params[:id])
 			   	if @comment.update(comment_params)			   		
 			   		render json: @comment			   				   		

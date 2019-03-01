@@ -14,12 +14,11 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     
   	def setup
   		@comment=create(:comment)
-  		@headers={"Authorization"=>"Basic #{Base64.encode64('user:secret')}","Content-Type"=>"application/vnd.api+json"}
-
+  		@headers={"Authorization"=>"Basic #{Base64.encode64('user:secret')}","Content-Type"=>"application/vnd.api+json"}      
   	end
   test "should get all comments of an article" do
   	#skip
-    get api_v1_article_comments_path(article_id:@comment.article_id), headers: @headers
+    get api_v1_user_blog_article_comments_path(user_id:@comment.user_id,blog_id:Blog.last.id,article_id:@comment.article_id), headers: @headers
     assert_response :success
   end
   test "should create a comment" do
@@ -33,13 +32,13 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
   	#binding.pry
   	#skip
   	assert_difference -> {Comment.count}, -1 do
-    	delete api_v1_article_comment_path(article_id:@comment.article_id,id:@comment.id), headers: @headers
+    	delete api_v1_user_blog_article_comment_path(user_id:@comment.user_id,blog_id:Blog.last.id,article_id:@comment.article_id,id:@comment.id), headers: @headers
     end
     assert_response :success
   end
   test "should update a comment" do
   	#skip
-    	patch api_v1_article_comment_path(article_id:@comment.article_id,id:@comment.id), params: {comment: {body:"new body"}},as: :json, headers: @headers      
+    	patch api_v1_user_blog_article_comment_path(user_id:@comment.user_id,blog_id:Blog.last.id,article_id:@comment.article_id,id:@comment.id), params: {comment: {body:"new body"}},as: :json, headers: @headers      
     assert_response :success
   end
 end
