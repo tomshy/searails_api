@@ -4,8 +4,8 @@ module Api
 			include ActionController::HttpAuthentication::Basic::ControllerMethods
 			http_basic_authenticate_with name: "user", password: "secret", except: :index
 		  def index
-		  	@blog=Blog.find(980190962)
-		  	#@article=Article.find(params[:id])
+		  	@user=User.find(params[:user_id])		  	
+		   	@blog=Blog.find(params[:blog_id])		  	
 		  	@articles=@blog.articles.all
 		  	render json: @articles
 		  end
