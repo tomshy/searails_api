@@ -1,34 +1,30 @@
 module Api
 	module V1
-		class BlogsController < ApplicationController
-			include ActionController::HttpAuthentication::Basic::ControllerMethods
-			http_basic_authenticate_with name: "user", password: "secret", except: :index
-			def index
-				@blogs=Blog.all
+		class BlogsController < ApplicationController			
+			http_basic_authenticate_with name: "user", password: "secret", except: :index			
+			def index		
+				@blogs=Blog.all		
 				render json: @blogs
 			end
-			def create
-				@user=User.find(params[:user_id])
-				@blog=Blog.new(blog_params)
-				@user.blogs << @blog			
-				#binding.pry
+			#binding.pry
+			def create				
+				@blog=Blog.new(blog_params)				
+				
 				if @blog.save
-
 					render json: {blog:{id:@blog.id, name:@blog.name},
 								  message:"Created Successfully",
-								  }, :status => :created
+								  }, status: 201
 				else
-					render json: {error:"Blog Not Created", :status => :bad_request}
+					render json: {error:"Blog Not Created"}, status: 400
 				end
 			end
 			def destroy
-				@user=User.find(params[:user_id])
-				@blog=@user.blogs.find(params[:id])
+				@blogs=Blog.all				
+				@blog=@blogs.find(params[:id])				
 				if @blog.destroy
-					@blogs=Blog.all
 					render json: @blogs
 				else
-					render json: {error:"Failed"}
+					render status: :not_found
 				end
 			end
 			private

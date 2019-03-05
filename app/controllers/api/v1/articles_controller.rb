@@ -1,50 +1,40 @@
 module Api
 	module V1
-		class ArticlesController < ApplicationController
-			include ActionController::HttpAuthentication::Basic::ControllerMethods
+		class ArticlesController < ApplicationController			
 			http_basic_authenticate_with name: "user", password: "secret", except: :index
-		  def index
-		  	@user=User.find(params[:user_id])		  	
+			before_action :create_user
+		  def index		  		  	
 		   	@blog=Blog.find(params[:blog_id])		  	
 		  	@articles=@blog.articles.all
 		  	render json: @articles
 		  end
-		  def create
-		  	@user = User.find(params[:user_id])
-		  	@blog = @user.blogs.find(params[:blog_id])		  	
+		  def create		  	
+		  	@blog = Blog.find(params[:blog_id])
 		  	@article=Article.new(article_params)
-		  	@blog.articles << @article
-				if @article.save
+		  	@article.user_id=@user
+		  	@blog.articles << @article		  	
+				if @article.save					
 					render json: {article:{title:@article.title, body:@article.body, blog: @blog.id, author: @user.id },								  
 								  status: :created}
 				else
 					render json: {error:"Not created"}
 				end 
 		  end
-		  def show
-		  	@user = User.find(params[:user_id])
-		  	@blog = @user.blogs.find(params[:blog_id])
-	    	@article = @blog.articles.find(params[:id])
+		  def show		  			  	
+	    	@article = Article.find(params[:id])
 	    	render json: @article
 		  end
 		  def destroy
-		  	@user = User.find(params[:user_id])
-		  	@blog = @user.blogs.find(params[:blog_id])	    		
-	    	@article = @blog.articles.find(params[:id])
-	    	if !@article.nil?
-		    	if @article.destroy
-		    		render json: @blog.articles.all
-	    		else
-	    			render json: {error:"An error occurred."}
-	    		end
+		  	@articles=Article.all	  			  	
+	    	@article = Article.find(params[:id])
+	    	if @article.destroy
+		    	render json: @articles
 	    	else
-	    		render json: {error: "Not Found"}
-	    	end
+	    		render json: {error:"An error occurred."}
+	    	end	    	
 		  end
-		  def update
-		  	@user = User.find(params[:user_id])
-		  	@blog = @user.blogs.find(params[:blog_id])
-	    	@article = @blog.articles.find(params[:id])
+		  def update		  			  	
+	    	@article = Article.find(params[:id])
 	    	if @article.update(article_params)
 	    		render json: @article
 	    	else

@@ -1,15 +1,12 @@
 require 'test_helper'
 require "faker"
 
-class CommentsControllerTest < ActionDispatch::IntegrationTest
-	    
+class CommentsControllerTest < ActionDispatch::IntegrationTest	  
   	def setup
   		@comment=create(:comment)
   		@auth_headers={"Authorization"=>"Basic #{Base64.encode64('user:secret')}"}
   	end
   test "should get all comments of an article" do
-  	#skip
-    #binding.pry
     get api_v1_article_comments_path(article_id: @comment.article_id),as: :json, headers: @auth_headers
     assert_response :success
   end
@@ -18,8 +15,9 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     #binding.pry
   	assert_difference -> {Comment.count} do
     	post api_v1_article_comments_path(article_id: @comment.article_id), params: {comment: 
-                                                                                    {body:"nice article"}
+                                                                                    {body: @comment.body}
                                                                                   }, as: :json,  headers: @auth_headers
+                                                                                  #binding.pry                                                                                  
     end
     assert_response :created
   end

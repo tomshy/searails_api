@@ -21,7 +21,6 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
                                                           body:"long body"
                                                         }
                                                       }, as: :json, headers: @auth_headers
-      #binding.pry
     end        
   end
   test "should retrieve an article by id" do
@@ -31,6 +30,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   	#skip
   	assert_difference -> {Article.count}, -1 do
     	delete api_v1_article_path(id:@article.id), as: :json, headers: @auth_headers
+      #binding.pry
     end
     assert_response :success
   end
