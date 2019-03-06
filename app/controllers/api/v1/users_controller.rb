@@ -9,10 +9,10 @@ module Api
 			def create
 				@user=User.new(user_parameters)
 				if @user.save
-					render json: {user:{name:@user.name,email:@user.email,username:@user.username}								  
-								  }, :status => :created	
+					render json: {user:{id: @user.id, name:@user.name,email:@user.email,username:@user.username}								  
+								  }, status: 201	
 				else 
-					render json: {error:{message:"Bad Request"}}, :status => :bad_request
+					render json: {message:"Bad Request"}, status: 400
 				end
 			end
 			private

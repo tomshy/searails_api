@@ -19,23 +19,23 @@ module Api
 									  message:"Created Successfully",
 									  }, status: 201
 					else
-						render json: {error:"Not created"}
+						render json: {message:"Not created"}, status: 400
 					end 
 			end		 
 			def destroy							
 			   	@comment = Comment.find(params[:id])			   	
 			    if @comment.destroy
-			    	render json: Comment.all
+			    	render json: Comment.all, status: 200			    	
 			   	else
-			   		render json: {error:"An error occurred."}
+			   		render json: {message:"Wrong comment ID"}, status: 404
 			   	end			   	
 			end
 			def update				
 			   	@comment = Comment.find(params[:id])
 			   	if @comment.update(comment_params)			   		
-			   		render json: @comment			   				   		
+			   		render json: @comment, status: 200			   				   		
 			   	else
-			   		render json: {error:"Error occurred",status: :not_modified}
+			   		render json: {message:"Wrong comment ID"}, status: 404
 			   	end
 			end
 			private

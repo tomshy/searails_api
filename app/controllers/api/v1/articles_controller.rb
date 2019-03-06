@@ -14,31 +14,31 @@ module Api
 		  	@article.user_id=@user
 		  	@blog.articles << @article		  	
 				if @article.save				
-					render json: {article:{id: @article.id, title:@article.title, body:@article.body, blog: @blog.id, author: @article.user_id },								  
-								  status: :created}
+					render json: {article:{id: @article.id, title:@article.title, body:@article.body, blog: @blog.id, author: @article.user_id }},
+								  status: 201
 				else
-					render json: {error:"Not created"}
+					render json: {message:"Bad Request"}, status: 400
 				end 
 		  end
 		  def show		  			  	
 	    	@article = Article.find(params[:id])
-	    	render json: @article
+	    	render json: @article, status: 200
 		  end
 		  def destroy
 		  	@articles=Article.all	  			  	
 	    	@article = Article.find(params[:id])
 	    	if @article.destroy
-		    	render json: @articles
+		    	render json: @articles, status: 200
 	    	else
-	    		render json: {error:"An error occurred."}
+	    		render json: {message:"Wrong article ID"}, status: 404
 	    	end	    	
 		  end
 		  def update		  			  	
 	    	@article = Article.find(params[:id])
 	    	if @article.update(article_params)
-	    		render json: @article
+	    		render json: @article, status: 200
 	    	else
-	    		render json: {error:"Error occurred"}
+	    		render json: {message:"Wrong article ID"}, status: 404
 	    	end
 		  end
 		  private

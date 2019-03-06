@@ -16,7 +16,7 @@ module Api
 								  message:"Created Successfully",
 								  }, status: 201
 				else
-					render json: {error:"Blog Not Created"}, status: 400
+					render json: {message:"Blog Not Created"}, status: 400
 				end
 			end
 			def destroy
@@ -25,7 +25,7 @@ module Api
 				if @blog.destroy
 					render json: @blogs
 				else
-					render status: :not_found
+					render json: {message:"Wrong Blog ID"}, status: 404
 				end
 			end
 			private
