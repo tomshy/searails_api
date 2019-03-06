@@ -14,7 +14,8 @@ module Api
 				@comment.user_id=@user				  	
 			  	@article.comments << @comment
 					if @comment.save						
-						render json: {article:{body:@comment.body},
+						render json: {id: @comment.id,
+									  comment:{body:@comment.body},
 									  message:"Created Successfully",
 									  }, status: 201
 					else

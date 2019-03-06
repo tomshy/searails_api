@@ -14,7 +14,7 @@ module Api
 		  	@article.user_id=@user
 		  	@blog.articles << @article		  	
 				if @article.save				
-					render json: {article:{title:@article.title, body:@article.body, blog: @blog.id, author: @user.id },								  
+					render json: {article:{id: @article.id, title:@article.title, body:@article.body, blog: @blog.id, author: @article.user_id },								  
 								  status: :created}
 				else
 					render json: {error:"Not created"}
