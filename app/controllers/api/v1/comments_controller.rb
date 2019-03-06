@@ -14,10 +14,10 @@ module Api
 				@comment.user_id=@user				  	
 			  	@article.comments << @comment
 					if @comment.save						
-						render json: {id: @comment.id,
-									  comment:{body:@comment.body},
-									  message:"Created Successfully",
-									  }, status: 201
+						render json: {comment:{id: @comment.id,
+											   body:@comment.body,
+									           commenter:@comment.user_id
+									  }}, status: 201
 					else
 						render json: {message:"Not created"}, status: 400
 					end 
