@@ -2,14 +2,15 @@ module Api
 	module V1
 		class BlogsController < ApplicationController			
 			http_basic_authenticate_with name: "user", password: "secret", except: :index			
+			before_action :create_user
 			def index		
 				@blogs=Blog.all		
 				render json: @blogs
 			end
 			#binding.pry
 			def create				
-				@blog=Blog.new(blog_params)				
-				
+				@blog=Blog.new(blog_params)	
+				@blog.user_id=@user
 				if @blog.save
 					render json: {blog:{id:@blog.id, name:@blog.name},
 								  message:"Created Successfully",
