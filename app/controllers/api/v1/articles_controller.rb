@@ -13,7 +13,7 @@ module Api
 		  	@article=Article.new(article_params)
 		  	@article.user_id=@user
 		  	@blog.articles << @article		  	
-				if @article.save					
+				if @article.save				
 					render json: {article:{title:@article.title, body:@article.body, blog: @blog.id, author: @user.id },								  
 								  status: :created}
 				else
