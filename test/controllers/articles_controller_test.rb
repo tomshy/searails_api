@@ -8,7 +8,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     @auth_headers = { 'Authorization' => "Basic #{Base64.encode64('user:secret')}" }
   end
   test 'should get all articles of a blog' do
-    # skip
+    #skip
     get api_v1_blog_articles_path(blog_id: @article.blog_id), as: :json
     assert_response :success
   end
@@ -24,10 +24,11 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     end
   end
   test 'should retrieve an article by id' do
+    #skip
     get api_v1_article_path(id: @article.id), as: :json
   end
   test 'should delete an article' do
-    # skip
+    #skip
     assert_difference -> { Article.count }, -1 do
       delete api_v1_article_path(id: @article.id), as: :json, headers: @auth_headers
       # binding.pry
