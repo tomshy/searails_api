@@ -18,8 +18,15 @@ module Api
         @article.user_id = @user
         @blog.articles << @article
         if @article.save
-          render json: { article: { id: @article.id, title: @article.title, body: @article.body, blog: @blog.id, author: @article.user_id } },
-                 status: 201
+          render json: { article: { 
+                                    id: @article.id, 
+                                    title: @article.title, 
+                                    body: @article.body, 
+                                    blog: @blog.id, 
+                                    author: @article.user_id 
+                                  } 
+                        },
+                        status: 201
         else
           render json: { message: 'Bad Request' }, status: 400
         end
