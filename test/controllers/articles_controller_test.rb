@@ -8,7 +8,7 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     @auth_headers = { 'Authorization' => "Basic #{Base64.encode64('user:secret')}" }
   end
   test 'should get all articles of a blog' do
-    #skip
+    # skip
     get api_v1_blog_articles_path(blog_id: @article.blog_id), as: :json
     assert_response :success
   end

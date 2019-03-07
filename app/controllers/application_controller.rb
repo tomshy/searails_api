@@ -2,7 +2,7 @@
 
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Basic::ControllerMethods
-  def create_user
+  def get_user
     @user = User.last.id
   end
 end

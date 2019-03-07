@@ -17,8 +17,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     # binding.pry
     assert_difference -> { Comment.count } do
       post api_v1_article_comments_path(article_id: @comment.article_id), params: { comment:
-                                                                                    { body: @comment.body } }, as: :json, headers: @auth_headers
-      # binding.pry
+                                                                                    { body: @comment.body } }, as: :json, headers: @auth_headers      
     end
     assert_response :created
   end

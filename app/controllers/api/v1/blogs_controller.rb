@@ -4,7 +4,7 @@ module Api
   module V1
     class BlogsController < ApplicationController
       http_basic_authenticate_with name: 'user', password: 'secret', except: :index
-      before_action :create_user, only: [:create]
+      before_action :get_user, only: [:create]
       before_action :get_blogs, only: [:index, :destroy]
       def index        
         render json: @blogs

@@ -4,7 +4,7 @@ module Api
   module V1
     class CommentsController < ApplicationController
       http_basic_authenticate_with name: 'user', password: 'secret', except: :index
-      before_action :create_user, only: [:create]
+      before_action :get_user, only: [:create]
       before_action :get_article, only: [:index, :create]
       before_action :get_comment, only: [:destroy, :update]
       def index        
@@ -44,10 +44,10 @@ module Api
       end
 
       def get_article
-        @article = Article.find(params[:article_id])
+        @article = Article.find_by(id: params[:article_id])
       end
       def get_comment
-        @comment = Comment.find(params[:id])
+        @comment = Comment.find_by(id: params[:id])
       end
     end
   end

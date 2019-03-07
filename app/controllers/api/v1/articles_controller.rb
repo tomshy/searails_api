@@ -4,7 +4,7 @@ module Api
   module V1    
     class ArticlesController < ApplicationController
       http_basic_authenticate_with name: 'user', password: 'secret', except: :index
-      before_action :create_user, only: [:create]
+      before_action :get_user, only: [:create]
       before_action :get_all_articles, only: [:destroy]
       before_action :get_article, only: [:show, :destroy, :update]
       before_action :get_blog, only: [:index, :create]
@@ -57,10 +57,10 @@ module Api
         @articles=Article.all
       end
       def get_article        
-        @article=Article.find(params[:id])
+        @article=Article.find_by(id: params[:id])
       end
       def get_blog
-         @blog = Blog.find(params[:blog_id])
+         @blog = Blog.find_by(id: params[:blog_id])
       end 
     end
   end
