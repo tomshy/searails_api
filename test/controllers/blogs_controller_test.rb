@@ -8,7 +8,7 @@ class BlogControllerTest < ActionDispatch::IntegrationTest
     @auth_headers = { 'Authorization' => "Basic #{Base64.encode64('user:secret')}" }
    end
   test 'create new blog by registered user' do
-    # skip
+    #skip
     assert_difference -> { Blog.count } do
       post api_v1_blogs_path, params: { blog:
                                         {
