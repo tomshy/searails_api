@@ -13,7 +13,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
   test 'should create a comment' do
-    # skip
+    #skip
     # binding.pry
     assert_difference -> { Comment.count } do
       post api_v1_article_comments_path(article_id: @comment.article_id), params: { comment:

@@ -3,8 +3,7 @@
 module Api
   module V1    
     class ArticlesController < ApplicationController
-      http_basic_authenticate_with name: 'user', 
-                                   password: 'secret', except: :index
+      http_basic_authenticate_with name: 'user', password: 'secret', except: :index
       before_action :create_user, only: [:create]
       before_action :get_all_articles, only: [:destroy]
       before_action :get_article, only: [:show, :destroy, :update]
