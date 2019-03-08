@@ -17,17 +17,23 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
                                         name: validuser.name,
                                         password: validuser.password,
                                         username: validuser.username
-                                      } }
+                                      } 
+                                    }
     assert_response 201, 'response should be created 201'
   end
   test 'should not create an invalid user' do
     # skip
     invaliduser = build(:user, :invaliduser)
-    post api_v1_users_path, params: { user:
-                                      {
-                                        name: invaliduser.name,
-                                        password: invaliduser.password
-                                      } }
+    assert_no_difference -> {User.count} do
+      post api_v1_users_path, params: { user:
+                                        {
+                                          name: invaliduser.name,
+                                          password: invaliduser.password
+                                        } 
+                                      }
+    end
+    #binding.pry
+    assert JSON.parse(response.body)["message"].present?, "should return bad request error message"
     assert_response 400, 'response should be Bad Request 400'
   end
 end

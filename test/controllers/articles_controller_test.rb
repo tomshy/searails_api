@@ -13,19 +13,34 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
   test 'should create an article' do
-    # skip
+    #skip
     assert_difference -> { Article.count } do
       post api_v1_blog_articles_path(blog_id: @article.blog_id),
            params: { article:
                      {
                        title: 'attractive title',
                        body: 'long body'
-                     } }, as: :json, headers: @auth_headers
+                     } 
+                   }, as: :json, headers: @auth_headers
     end
+    assert_response 201
   end
+  test "should not create an article with invalid data like empty title field" do
+    assert_no_difference -> {Article.count} do
+      post api_v1_blog_articles_path(blog_id: @article.blog_id),
+             params: { article:
+                       {
+                         title: '',
+                         body: 'long body'
+                       } 
+                     }, as: :json, headers: @auth_headers
+    end
+    assert_response 400
+  end 
   test 'should retrieve an article by id' do
     #skip
     get api_v1_article_path(id: @article.id), as: :json
+    assert_response 200
   end
   test 'should delete an article' do
     #skip
@@ -36,9 +51,13 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
   test 'should update an article' do
-    patch api_v1_article_path(id: @article.id), params: { article:
+    @curr_article=Article.first     
+    assert_changes 'Article.first.body' do
+    patch api_v1_article_path(id: @curr_article.id), params: { article:
                                                          { title: 'new title',
                                                            body: 'new body' } }, as: :json, headers: @auth_headers
+    
+    end    
     assert_response :success
   end
 end
